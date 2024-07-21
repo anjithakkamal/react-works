@@ -1,0 +1,11 @@
+.profileContainer{
+
+    color: blueviolet;
+    border: 1px solid greenyellow;
+    background-color: pink;
+}
+.profileTitle{
+    text-align: center;
+    color: azure;
+}
+
