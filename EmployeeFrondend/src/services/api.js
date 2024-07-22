@@ -22,7 +22,7 @@ export async function employeeCreateApi(data){
 
 }
 
-export async function emplyeeUpdateApi(id,data){
+export async function employeeUpdateApi(id,data){
 
     return await axios.put(BASE_URL+`${id}/`,data)
 

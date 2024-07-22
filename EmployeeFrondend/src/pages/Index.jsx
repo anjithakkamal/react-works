@@ -6,11 +6,13 @@ import NavBar from '../components/NavBar'
 function Index() {
   const [refreshRequired,setRefreshrequired]=useState('')
 
+  const [employeeId, setEmployeeId] = useState()
+
   return (
     <div>
       <NavBar></NavBar>
-      <EmployeeCreate setRefreshrequired={setRefreshrequired}></EmployeeCreate>
-      <EmployeeSummary refreshRequired={refreshRequired}></EmployeeSummary>
+      <EmployeeCreate setRefreshrequired={setRefreshrequired} employeeId={employeeId}></EmployeeCreate>
+      <EmployeeSummary refreshRequired={refreshRequired} setEmployeeId={setEmployeeId}></EmployeeSummary>
     </div>
   )
 }

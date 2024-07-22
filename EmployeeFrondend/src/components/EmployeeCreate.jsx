@@ -1,17 +1,44 @@
-import React,{useState} from 'react'
-import { employeeCreateApi } from '../services/api';
+import React, { useEffect, useState } from 'react'
+import { employeeCreateApi, employeeDetailApi, employeeUpdateApi } from '../services/api';
 
-function EmployeeCreate({setRefreshrequired}) {
+function EmployeeCreate({ setRefreshrequired, employeeId }) {
 
   const [employee, setEmployee] = useState({ name: '', department: '', salary: '', place: '', email: '', profile: '' })
 
-  async function handleSubmit(event){
+  useEffect(() => {
+
+    getEmployeeDetails(employeeId)
+
+  }, [employeeId])
+
+  async function getEmployeeDetails(employeeId) {
+
+    let res = await employeeDetailApi(employeeId)
+
+    if (res.status > 199 && res.status < 300) {
+
+      setEmployee(res.data)
+
+    }
+  }
+
+  async function handleSubmit(event) {
 
     event.preventDefault()
 
-    // console.log(movie);
+    if (employeeId) {
 
-    let res=await employeeCreateApi(employee)
+      let res = await employeeUpdateApi(employeeId, employee)
+
+    }
+
+    else {
+
+      let res = await employeeCreateApi(employee)
+
+    }
+
+    // console.log(movie);
 
     console.log(res);
 
@@ -25,7 +52,7 @@ function EmployeeCreate({setRefreshrequired}) {
         <div className="row">
           <div className="col-2"></div>
           <div className="col-8 border border-3 rounded shadow p-4">
-            <h3 className='text-center my-2'>Add New  Employee </h3>
+            {employeeId?<h3>Edit Employee</h3>:<h3 className='text-center my-2'>Add New  Employee </h3>}
             <form action="" onSubmit={handleSubmit}>
               <div className="mb-3 d-flex gap-1">
                 <div className='w-50'>
@@ -33,6 +60,7 @@ function EmployeeCreate({setRefreshrequired}) {
                   <input
                     type="text"
                     className='form-control'
+                    value={employee.name}
                     onChange={(e) => setEmployee({ ...employee, name: e.target.value })}
                   />
                 </div>
@@ -42,6 +70,7 @@ function EmployeeCreate({setRefreshrequired}) {
                   <input
                     type="text"
                     className='form-control'
+                    value={employee.department}
                     onChange={(e) => setEmployee({ ...employee, department: e.target.value })}
                   />
                 </div>
@@ -52,6 +81,7 @@ function EmployeeCreate({setRefreshrequired}) {
                   <input
                     type="text"
                     className='form-control'
+                    value={employee.salary}
                     onChange={(e) => setEmployee({ ...employee, salary: e.target.value })}
                   />
                 </div>
@@ -61,6 +91,7 @@ function EmployeeCreate({setRefreshrequired}) {
                   <input
                     type="text"
                     className='form-control'
+                    value={employee.place}
                     onChange={(e) => setEmployee({ ...employee, place: e.target.value })}
                   />
                 </div>
@@ -71,6 +102,7 @@ function EmployeeCreate({setRefreshrequired}) {
                   <input
                     type="text"
                     className='form-control'
+                    value={employee.email}
                     onChange={(e) => setEmployee({ ...employee, email: e.target.value })}
                   />
                 </div>
@@ -86,7 +118,7 @@ function EmployeeCreate({setRefreshrequired}) {
                 </div>
               </div>
               <div className="mb-3">
-                <button type='submit'>Add</button>
+                {employeeId?<button className='form-control btn btn-primary' type='submit'>Edit</button>:<button className='form-control btn btn-dark' type='submit'>Add</button>}
               </div>
             </form>
           </div>
@@ -96,7 +128,7 @@ function EmployeeCreate({setRefreshrequired}) {
 
 
     </div>
-    
+
   )
 }
 

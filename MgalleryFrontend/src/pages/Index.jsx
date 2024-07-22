@@ -5,14 +5,18 @@ import NavBar from '../components/NavBar'
 
 function Index() {
 
-  const [refreshRequired,setRefreshrequired]=useState('')
+  const [refreshRequired, setRefreshrequired] = useState('')
+
+  const [movieId, setMovieId] = useState()
+
+
   return (
     <div>
-        
-        <NavBar></NavBar>
-        <MovieCreate setRefreshrequired={setRefreshrequired}></MovieCreate>
-      <MoviesSummary refreshRequired={refreshRequired}></MoviesSummary>
-      
+
+      <NavBar></NavBar>
+      <MovieCreate setRefreshrequired={setRefreshrequired} movieId={movieId}></MovieCreate>
+      <MoviesSummary refreshRequired={refreshRequired} setMovieId={setMovieId}></MoviesSummary>
+
     </div>
   )
 }
