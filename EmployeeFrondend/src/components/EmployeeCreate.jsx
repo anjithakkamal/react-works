@@ -30,19 +30,33 @@ function EmployeeCreate({ setRefreshrequired, employeeId }) {
 
       let res = await employeeUpdateApi(employeeId, employee)
 
+      console.log(res);
+
+      console.log("update");
+
+      reSet()
+
+      setRefreshrequired(Math.random())
+
     }
 
     else {
 
       let res = await employeeCreateApi(employee)
 
+      console.log(res);
+
+      console.log("create");
+
+      reSet()
+
+      setRefreshrequired(Math.random())
+
     }
+    function reSet(){
 
-    // console.log(movie);
-
-    console.log(res);
-
-    setRefreshrequired("reload")
+      setEmployee({ name: '', department: '', salary: '', place: '', email: '', profile:null })
+    }
 
   }
   return (

@@ -32,18 +32,35 @@ function MovieCreate({ setRefreshrequired, movieId }) {
 
       let res=await movieUpdateApi(movieId,movie)
 
+      console.log(res);
+
+      console.log("update");
+
+      reSet()
+
+      setRefreshrequired(Math.random())
+
     }
 
     else{
       
     let res = await movieCreateApi(movie)
-    }
-
-    // console.log(movie);
 
     console.log(res);
 
-    setRefreshrequired("reload")
+    console.log("create");
+
+    reSet()
+
+    setRefreshrequired(Math.random())
+
+   
+    }
+
+    function reSet(){
+
+      setMovie({ title: '', year: '', director: '', runtime: '', language: '', poster:null })
+    }
 
   }
   return (

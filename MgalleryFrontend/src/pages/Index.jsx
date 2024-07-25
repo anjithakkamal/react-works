@@ -5,7 +5,7 @@ import NavBar from '../components/NavBar'
 
 function Index() {
 
-  const [refreshRequired, setRefreshrequired] = useState('')
+  const [refreshRequired, setRefreshrequired] = useState()
 
   const [movieId, setMovieId] = useState()
 

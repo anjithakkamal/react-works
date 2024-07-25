@@ -4,7 +4,7 @@ import EmployeeSummary from '../components/EmployeeSummary'
 import NavBar from '../components/NavBar'
 
 function Index() {
-  const [refreshRequired,setRefreshrequired]=useState('')
+  const [refreshRequired,setRefreshrequired]=useState()
 
   const [employeeId, setEmployeeId] = useState()
 

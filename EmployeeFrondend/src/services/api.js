@@ -24,7 +24,11 @@ export async function employeeCreateApi(data){
 
 export async function employeeUpdateApi(id,data){
 
-    return await axios.put(BASE_URL+`${id}/`,data)
+    let headers={
+        "Content-Type":"multipart/form-data"
+    }
+
+    return await axios.put(BASE_URL+`${id}/`,data,{headers:headers})
 
 }
 
