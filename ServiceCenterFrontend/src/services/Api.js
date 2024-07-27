@@ -11,3 +11,14 @@ export async function ListCustomerApi(){
 
     return await axios.get(BASE_URL+"customers/")
 }
+
+export async function retrieveCustomerApi(id){
+
+    return await axios.get(BASE_URL+`customers/${id}/`)
+}
+
+export async function addWorkApi(custId,data){
+
+    return await axios.post(BASE_URL+`customers/${custId}/work/`,data)
+
+}

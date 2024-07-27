@@ -6,9 +6,9 @@ import Header from '../components/Header'
 function Index() {
     return (
         <div>
-            <Header></Header>
+
             <div className='container d-flex justify-content-end my-2'>
-                <CustomerCreate></CustomerCreate>
+                <CustomerCreate cls={"fa-solid fa-plus"} custId={null}></CustomerCreate>
             </div>
 
             <div className="container">

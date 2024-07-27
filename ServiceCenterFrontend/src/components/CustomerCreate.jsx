@@ -4,9 +4,11 @@ import Button from 'react-bootstrap/Button';
 
 import Modal from 'react-bootstrap/Modal';
 
+import { useNavigate } from 'react-router-dom';
+
 import { addCustomerApi } from '../services/Api';
 
-function CustomerCreate() {
+function CustomerCreate({ cls, custId }) {
 
     const [show, setShow] = useState(false);
 
@@ -14,21 +16,28 @@ function CustomerCreate() {
 
     const handleShow = () => setShow(true);
 
+    const navigate = useNavigate()
+
     const [customer, setCustomer] = useState({ name: "", phone: "", email: "", vehicle_no: "", running_km: "" })
 
-    async function handleFormSubmit(){
+    async function handleFormSubmit() {
 
-        let res=await addCustomerApi(customer)
+        let res = await addCustomerApi(customer)
 
         console.log(res);
 
         setShow(false)
+
+        if (res.status > 199 && res.status < 300) {
+
+            navigate(`customer/${res.data.id}`)
+        }
     }
 
     return (
         <>
             <Button variant="primary" onClick={handleShow}>
-                Add New Customer
+                <i className={cls}></i>
             </Button>
 
             <Modal show={show} onHide={handleClose}>
