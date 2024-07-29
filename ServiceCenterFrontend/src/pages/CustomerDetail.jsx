@@ -11,6 +11,10 @@ function CustomerDetail() {
 
     const [customer, setCustomer] = useState()
 
+    const [refreshRequired,setRefreshRequired]=useState()
+
+    const [workId,setWorkId]=useState()
+
     async function fetchCustomerDetail() {
 
         let res = await retrieveCustomerApi(id)
@@ -68,8 +72,8 @@ function CustomerDetail() {
 
                 </div>
             </div>}
-            <WorkCreate custId={id}></WorkCreate>
-            <WorkList custId={id}></WorkList>
+            <WorkCreate custId={id} setRefreshRequired={setRefreshRequired} workId={workId}></WorkCreate>
+            <WorkList custId={id} refreshRequired={refreshRequired} setWorkId={setWorkId}></WorkList>
         </div>
     )
 }

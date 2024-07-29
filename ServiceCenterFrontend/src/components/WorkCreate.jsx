@@ -1,28 +1,67 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Form from 'react-bootstrap/Form';
 
 import InputGroup from 'react-bootstrap/InputGroup';
 
 import Button from 'react-bootstrap/Button';
-import { addWorkApi } from '../services/Api';
 
-function WorkCreate({custId}) {
+import { addWorkApi, retrieveWorkApi, updateWorkApi } from '../services/Api';
 
-    const [work,setWork]=useState({title:"",description:"",amount:""})
+function WorkCreate({ custId, setRefreshRequired,workId }) {
 
-    async function handleFormSubmit(){
+    async function handleUpdate(){
 
-        let res=await addWorkApi(custId,work)
+        let res=await updateWorkApi(workId,work)
 
-        console.log(res.data);
+        if(res.status>199 && res.status<300){
+            setRefreshRequired(Math.random())
+            formReset()
+
+        }
+    }
+
+    const [work, setWork] = useState({ title: "", description: "", amount: "" })
+
+    async function fetchWorkDetail(workId){
+
+        let res=await retrieveWorkApi(workId)
+
+        if (res.status>199 && res.status<300){
+
+            setWork(res.data)
+        }
+    }
+
+    useEffect(()=>{
+
+        fetchWorkDetail(workId)
+
+    },[workId])
+
+    async function handleFormSubmit() {
+
+        let res = await addWorkApi(custId, work)
+
+        if (res.status > 199 && res.status < 300) {
+
+            setRefreshRequired(Math.random())
+
+            formReset()
+        }
+    }
+
+    function formReset(){
+        
+        setWork({ title: "", description: "", amount: "" })
+
     }
 
     return (
         <div className='border border-2 border-dark p-3 rounded shadow'>
 
             <div className="row ">
-                <h5 className='fw-bold text-center'>Add Work</h5>
+                {workId?<h5 className='fw-bold text-center'>Edit Work</h5>:<h5 className='fw-bold text-center'>Add Work</h5>}
                 <div className="col-4">
                     <InputGroup className="mb-3">
                         <InputGroup.Text id="inputGroup-sizing-default">
@@ -31,7 +70,8 @@ function WorkCreate({custId}) {
                         <Form.Control
                             aria-label="Default"
                             aria-describedby="inputGroup-sizing-default"
-                            onChange={(e)=>setWork({...work,title:e.target.value})}
+                            value={work.title}
+                            onChange={(e) => setWork({ ...work, title: e.target.value })}
                         />
                     </InputGroup>
                 </div>
@@ -43,7 +83,8 @@ function WorkCreate({custId}) {
                         <Form.Control
                             aria-label="Default"
                             aria-describedby="inputGroup-sizing-default"
-                            onChange={(e)=>setWork({...work,description:e.target.value})}
+                            value={work.description}
+                            onChange={(e) => setWork({ ...work, description: e.target.value })}
                         />
                     </InputGroup>
                 </div>
@@ -55,11 +96,14 @@ function WorkCreate({custId}) {
                         <Form.Control
                             aria-label="Default"
                             aria-describedby="inputGroup-sizing-default"
-                            onChange={(e)=>setWork({...work,amount:e.target.value})}
+                            value={work.amount}
+                            onChange={(e) => setWork({ ...work, amount: e.target.value })}
                         />
-                        <Button variant="secondary" id="button-addon2" onClick={handleFormSubmit}>
+                        {workId?<Button variant="secondary" id="button-addon2" onClick={handleUpdate}>
+                            Edit
+                        </Button>:<Button variant="secondary" id="button-addon2" onClick={handleFormSubmit}>
                             Add
-                        </Button>
+                        </Button>}
                     </InputGroup>
                 </div>
             </div>
