@@ -32,3 +32,18 @@ export async function updateWorkApi(workId,data){
 
     return await axios.put(BASE_URL+`work/${workId}/`,data)
 }
+
+export async function deleteWorkApi(workId){
+
+    return await axios.delete(BASE_URL+`work/${workId}/`)
+}
+
+export async function editCustomerApi(custId,data){
+
+    return await axios.put(BASE_URL+`customers/${custId}/`,data)
+}
+
+export async function deleteCustomerApi(custId){
+
+    return await axios.delete(BASE_URL+`customers/${custId}/`)
+}

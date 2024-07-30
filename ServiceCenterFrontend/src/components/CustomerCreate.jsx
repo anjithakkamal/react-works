@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Button from 'react-bootstrap/Button';
 
@@ -6,9 +6,9 @@ import Modal from 'react-bootstrap/Modal';
 
 import { useNavigate } from 'react-router-dom';
 
-import { addCustomerApi } from '../services/Api';
+import { addCustomerApi, editCustomerApi, retrieveCustomerApi } from '../services/Api';
 
-function CustomerCreate({ cls, custId }) {
+function CustomerCreate({ cls, custId,setReloadRequired }) {
 
     const [show, setShow] = useState(false);
 
@@ -22,17 +22,47 @@ function CustomerCreate({ cls, custId }) {
 
     async function handleFormSubmit() {
 
-        let res = await addCustomerApi(customer)
+        if (custId) {
+            // edit logic
 
-        console.log(res);
+            let res=await editCustomerApi(custId,customer)
 
-        setShow(false)
+            if(res.status>199 && res.status<300){
+
+                setReloadRequired(Math.random())
+
+                setShow(false)
+
+            }
+        }
+        else {
+            // create logic
+            let res = await addCustomerApi(customer)
+
+            console.log(res);
+
+            setShow(false)
+
+            if (res.status > 199 && res.status < 300) {
+
+                navigate(`customer/${res.data.id}`)
+            }
+        }
+    }
+
+    async function fetchCustomerDetail(custId) {
+
+        let res = await retrieveCustomerApi(custId)
 
         if (res.status > 199 && res.status < 300) {
 
-            navigate(`customer/${res.data.id}`)
+            setCustomer(res.data)
         }
     }
+
+    useEffect(() => {
+        fetchCustomerDetail(custId)
+    }, [custId])
 
     return (
         <>
@@ -42,7 +72,7 @@ function CustomerCreate({ cls, custId }) {
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Add New Customer</Modal.Title>
+                    {custId ? <Modal.Title>Change Customer</Modal.Title> : <Modal.Title>Add New Customer</Modal.Title>}
                 </Modal.Header>
                 <Modal.Body>
                     <form action="">
@@ -50,18 +80,21 @@ function CustomerCreate({ cls, custId }) {
                             <label htmlFor="">Enter Customer Name</label>
                             <input type="text"
                                 className='form-control'
+                                value={customer.name}
                                 onChange={(e) => setCustomer({ ...customer, name: e.target.value })} />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="">Enter Customer Phone</label>
                             <input type="text"
                                 className='form-control'
+                                value={customer.phone}
                                 onChange={(e) => setCustomer({ ...customer, phone: e.target.value })} />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="">Enter Customer Email</label>
                             <input type="email"
                                 className='form-control'
+                                value={customer.email}
                                 onChange={(e) => setCustomer({ ...customer, email: e.target.value })} />
 
                         </div>
@@ -69,6 +102,7 @@ function CustomerCreate({ cls, custId }) {
                             <label htmlFor="">Enter Customer Vehicle Number</label>
                             <input type="text"
                                 className='form-control'
+                                value={customer.vehicle_no}
                                 onChange={(e) => setCustomer({ ...customer, vehicle_no: e.target.value })} />
 
                         </div>
@@ -76,6 +110,7 @@ function CustomerCreate({ cls, custId }) {
                             <label htmlFor="">Enter vehicle Running Km</label>
                             <input type="text"
                                 className='form-control'
+                                value={customer.running_km}
                                 onChange={(e) => setCustomer({ ...customer, running_km: e.target.value })} />
 
                         </div>

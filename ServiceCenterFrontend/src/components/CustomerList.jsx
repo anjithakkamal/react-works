@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { ListCustomerApi } from '../services/Api'
+import { deleteCustomerApi, ListCustomerApi } from '../services/Api'
 
 import Button from 'react-bootstrap/Button';
 
@@ -10,6 +10,18 @@ import CustomerCreate from './CustomerCreate';
 function CustomerList() {
 
     const [customers, setCustomers] = useState()
+
+    const [reloadRequired,setReloadRequired]=useState()
+
+    async function handleDelete(custId){
+
+        let res=await deleteCustomerApi(custId)
+
+        if(res.status>199 && res.status<300){
+
+            fetchAllCustomers()
+        }
+    }
 
     async function fetchAllCustomers() {
 
@@ -25,7 +37,7 @@ function CustomerList() {
 
     useEffect(() => {
         fetchAllCustomers()
-    }, [])
+    }, [reloadRequired])
     return (
 
         <div>
@@ -47,9 +59,6 @@ function CustomerList() {
                         <h5 class="text-center text-decoration-underline"> Odometer</h5>
 
                         <div class="my-3"><span class="me-2"><i class="fa-solid fa-gauge"></i></span>{cust.running_km}km</div>
-
-
-
                     </div>
                     <div class="col-2 border-end">
                         <h5 class="text-center text-decoration-underline"> Date</h5>
@@ -84,12 +93,12 @@ function CustomerList() {
 
                             <div class="mb-2">
 
-                                <CustomerCreate cls={"fa-solid fa-pen-to-square"} custId={cust.id}></CustomerCreate>
+                                <CustomerCreate cls={"fa-solid fa-pen-to-square"} custId={cust.id} setReloadRequired={setReloadRequired}></CustomerCreate>
 
                             </div>
 
                             <div class="mb-2">
-                                <Button className='btn btn-primary' >
+                                <Button className='btn btn-primary' onClick={()=>handleDelete(cust.id)}>
                                     <i class="fa-solid fa-trash"></i>
                                 </Button>
 

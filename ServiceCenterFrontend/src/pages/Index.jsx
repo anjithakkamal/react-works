@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CustomerCreate from '../components/CustomerCreate'
 import CustomerList from '../components/CustomerList'
 import Header from '../components/Header'
 
 function Index() {
+
     return (
         <div>
 
